@@ -25,9 +25,12 @@ var hugs = [
     "(づ｡◕‿‿◕｡)づ"
 ];
 
-client.addListener('message', function(from, to, message) {
+var cvan = ["cvan", "cvane", "i_am_cvan"];
 
-    if(from == "cvan" || from == "cvane" || from == "i_am_cvan") {
+client.addListener('message', function(from, to, message) {
+    var is_cvan = cvan.indexOf(from) > -1;
+
+    if (is_cvan) {
         cvancounter++;
         if(cvancounter == 5) {
             cvancounter = -1;
@@ -43,15 +46,15 @@ client.addListener('message', function(from, to, message) {
         setTimeout(function() {delete hugdelay[from];}, 1000 * 60 * 60);
 
         console.log(from + ": " + message);
-        if(from == "cvan" || from == "cvane")
+        if(is_cvan)
             client.say(to, "man up, " + from);
         else
             client.say(to, "(" +from + ")");
 
     } else if (contains(message.toLowerCase(),
                         ["hate this", " sad", "sad ", "i need a hug",
-                         "i'm sad", "fml", "this is crap",
-                         "i need a drink"])) {
+                         "i'm sad", "fml", "is crap",
+                         "need a drink"])) {
 
         if(hugdelay[from])
             return;
@@ -60,15 +63,15 @@ client.addListener('message', function(from, to, message) {
         console.log(from + ": " + "Needs a hug >> " + message);
         client.say(to, from + ": need a hug, bro?");
 
-    } else if (message.substr(0, 7) == "hugbot:") {
+    } else if (message.substr(0, 7) == client.nick + ":") {
         tlm = message.toLowerCase();
         if(tlm.indexOf("botsnack") > -1) {
             // Botsnack!
             client.say(to, from + ": *BURP*");
-        } else if(contains(tlm, ["yes", "yup", "yeah", "yep", "i do", "sure", "hit me up", "go for it", "please"]) &&
+        } else if(contains(tlm, ["yes", "yes please", "yup", "yeah", "yep", "i do", "sure", "hit me up", "go for it", "please"]) &&
                from in huggable) { // Offer hugs!
             delete huggable[from];
-            if (from === "cvan")
+            if (is_cvan)
                 client.say(to, from + ": what else is new");
             else {
                 var hug = hugs[(Math.random() * hugs.length)|0];
