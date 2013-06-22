@@ -1,6 +1,21 @@
+var http = require('http');
+var port = process.env.VCAP_APP_PORT || 6969;
+
+var logs = 'I AM HUGBOT\n';
+function log(message) {
+    logs += message + '\n';
+    console.log(message);
+}
+
+http.createServer(function(request, response) {
+    response.writeHead(200, {'Content-Type': 'text/plain'});
+    response.end(logs);
+}).listen(port, '0.0.0.0');
+
+
 var irc = require('irc');
 var client = new irc.Client('irc.mozilla.org', 'hugbot', {
-    channels: ['#amo', '#webdev', '#interns', '#remora', '#breakpad', '#amo-editors', '#'],
+    channels: ['#amo', '#webdev', '#interns', '#remora', '#breakpad', '#amo-editors', '#', '#bots', '#webmaker'],
 });
 
 huggable = {};
@@ -34,7 +49,7 @@ client.addListener('message', function(from, to, message) {
         cvancounter++;
         if(cvancounter == 5) {
             cvancounter = -1;
-            console.log(">> cvan is being noisy.");
+            log(">> cvan is being noisy.");
             client.say(to, "omg " + from + ", quit yer yammerin'");
         }
     } else {cvancounter = 0;}
@@ -45,7 +60,7 @@ client.addListener('message', function(from, to, message) {
         hugdelay[from] = true;
         setTimeout(function() {delete hugdelay[from];}, 1000 * 60 * 60);
 
-        console.log(from + ": " + message);
+        log(from + ": " + message);
         if(is_cvan)
             client.say(to, "man up, " + from);
         else
@@ -60,7 +75,7 @@ client.addListener('message', function(from, to, message) {
             return;
 
         huggable[from] = true;
-        console.log(from + ": " + "Needs a hug >> " + message);
+        log(from + ": " + "Needs a hug >> " + message);
         client.say(to, from + ": need a hug, bro?");
 
     } else if (message.substr(0, 7) == client.nick + ":") {
