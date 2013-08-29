@@ -15,7 +15,7 @@ http.createServer(function(request, response) {
 
 var irc = require('irc');
 var client = new irc.Client('irc.mozilla.org', 'hugbot', {
-    channels: ['#amo', '#webdev', '#interns', '#remora', '#breakpad', '#amo-editors', '#', '#bots', '#webmaker'],
+    channels: ['#amo', '#webdev', '#interns', '#remora', '#breakpad', '#amo-editors', '#', '#bots', '#webmaker', '#payments'],
 });
 
 huggable = {};
