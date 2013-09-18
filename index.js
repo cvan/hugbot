@@ -78,7 +78,7 @@ client.addListener('message', function(from, to, message) {
         log(from + ": " + "Needs a hug >> " + message);
         client.say(to, from + ": need a hug, bro?");
 
-    } else if (message.substr(0, 7) == client.nick + ":") {
+    } else if (message.substr(0, client.nick.length + 1) == client.nick + ":") {
         tlm = message.toLowerCase();
         if(tlm.indexOf("botsnack") > -1) {
             // Botsnack!
